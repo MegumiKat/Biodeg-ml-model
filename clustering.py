@@ -54,17 +54,23 @@ else :
   #exit()  #it is really useful to crash the program since there is no action after ?
 
 
-def label_degradation(value):
-    if value < 0.3:
-        return "Low"
-    elif value < 0.6:
-        return "Medium"
-    else:
-        return "High"
+# def label_degradation(value):
+#     if value < 0.3:
+#         return "Low"
+#     elif value < 0.6:
+#         return "Medium"
+#     else:
+#         return "High"
 
-y = y_raw.apply(label_degradation)
+# y = y_raw.apply(label_degradation)
+
+y, bins= pd.qcut(y_raw, q=3, labels=["Low", "Medium", "High"], retbins=True)
+
 
 print(y.value_counts())
+print("分界线（cutpoints）:")
+for i in range(len(bins)-1):
+    print(f"Group {i+1}: {bins[i]:.4f} ~ {bins[i+1]:.4f}")
 
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
