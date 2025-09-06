@@ -68,7 +68,7 @@ y, bins= pd.qcut(y_raw, q=3, labels=["Low", "Medium", "High"], retbins=True)
 
 
 print(y.value_counts())
-print("分界线（cutpoints）:")
+print("cutpoints:")
 for i in range(len(bins)-1):
     print(f"Group {i+1}: {bins[i]:.4f} ~ {bins[i+1]:.4f}")
 
@@ -90,7 +90,7 @@ models = {
     "Gaussian Process": GaussianProcessClassifier(kernel=kernel)
 }
 
-print("\n========== 交叉验证准确率 (5-Fold) ==========\n")
+print("\n========== Cross-validation accuracy (5-Fold) ==========\n")
 cv_results = []
 for name, model in models.items():
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
@@ -102,12 +102,12 @@ for name, model in models.items():
     cv_results.append((name, mean_score, std_score))
 
 
-print("\n========== 最终模型训练 + 预测 (使用 RandomForest) ==========\n")
+print("\n========== Final model training + prediction (using RandomForest) ==========\n")
 best_model = models["Random Forest"]
 best_model.fit(X_train_scaled, y_train)
 y_pred = best_model.predict(X_test_scaled)
 
-print("\n Classification Report:")
+print("Classification Report:")
 print(classification_report(y_test, y_pred))
 
 # 混淆矩阵
@@ -120,4 +120,4 @@ print(classification_report(y_test, y_pred))
 sample = [[36.3, 45.45, 4.54, 0, 4.54, 0, 0, 9.09, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]  # 可替换
 sample_scaled = scaler.transform(sample)
 sample_pred = best_model.predict(sample_scaled)
-print(f"\n📦 示例样本预测降解等级为: {sample_pred[0]}")
+print(f"\nThe predicted degradation level of the sample is: {sample_pred[0]}")
